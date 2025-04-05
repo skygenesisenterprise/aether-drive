@@ -1,0 +1,47 @@
+RewriteEngine On
+
+# Gérer l'autorisation HTTP (garder les en-têtes d'autorisation pour certaines API)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Base du réécriture des URL
+RewriteBase /
+
+# Si la page demandée est un fichier index.html, ne rien changer
+RewriteRule ^index\.html$ - [L]
+
+# Si la ressource demandée n'est ni un fichier existant ni un répertoire
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rediriger toutes les autres requêtes vers index.html (y compris les sous-routes)
+RewriteRule ^(.*)$ /index.html [L]
+
+# Désactiver l'énumération des répertoires
+Options -Indexes
+
+# Protection des fichiers sensibles (.htaccess, .htpasswd, .ini, etc.)
+#<Files ~ "\.(htaccess|htpasswd|ini|log|sh|inc|bak)$">
+#    Order Allow, Deny
+#    Deny from all
+#</Files>
+
+# Protection contre les injections SQL
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{QUERY_STRING} (union|select|insert|drop|delete|update) [NC]
+    RewriteRule .* - [F]
+</IfModule>
+
+# Redirection de toutes les requêtes HTTP vers HTTPS
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Protection contre les attaques XSS
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+</IfModule>
