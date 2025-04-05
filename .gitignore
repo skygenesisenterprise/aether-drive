@@ -7,23 +7,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependency directories
 node_modules
+jspm_packages
+
+# Build directories
 dist
 dist-ssr
-*.local
-
-# Editor directories and files
-.git/*
-.idea/*
-.github/*
-.vscode/*
-!.vscode/extensions.json
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+build
 
 # Environment variables
 .env
@@ -36,31 +27,36 @@ dist-ssr
 .env.test
 .env.production
 
-# Mac system files
+# Editor directories and files
+.idea/
+.vscode/
+!.vscode/extensions.json
 .DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
 
-# Windows system files
+# Git-related files
+.git/*
+.github/*
+
+# System files
+.DS_Store
 Thumbs.db
 ehthumbs.db
-
-# Linux system files
 *~
 
 # Temporary files
 *.tmp
 *.temp
 
-# Build directories
-build
-dist
-
-# Coverage directory used by tools like istanbul
+# Coverage directory
 coverage
 
-# Dependency directories
-jspm_packages
-
-# Compiled source #
+# Compiled source files
 *.com
 *.class
 *.dll
@@ -70,9 +66,3 @@ jspm_packages
 
 # Backup files
 *~
-
-# IDE files    
-*.swp
-
-# JetBrains IDEs
-.idea/
