@@ -18,10 +18,61 @@ dist-ssr
 .github/*
 .vscode/*
 !.vscode/extensions.json
-.idea
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.development
+.env.test
+.env.production
+
+# Mac system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+
+# Linux system files
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build directories
+build
+dist
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Dependency directories
+jspm_packages
+
+# Compiled source #
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Backup files
+*~
+
+# IDE files    
+*.swp
+
+# JetBrains IDEs
+.idea/
