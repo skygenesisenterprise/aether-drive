@@ -4,6 +4,12 @@ import { Layout } from './components/layout/Layout';
 import { Dashboard } from './components/Dashboard';
 import { FileExplorer } from './components/file-explorer/FileExplorer';
 import { UserSettings } from './components/profile/UserSettings';
+import SignIn from './components/auth/signin'; // Import du composant SignIn
+import SignUp from './components/auth/signup'; // Import du composant SignUp
+import AccountActivity from './components/security/account-activity'; // Import du composant AccountActivity
+import Vault from './components/security/vault'; // Import du composant Vault
+import Authentication from './components/security/authentification'; // Import du composant Authentication
+import Devices from './components/security/devices'; // Import du composant Devices
 
 export default function App() {
   return (
@@ -93,6 +99,47 @@ export default function App() {
             element={
               <Layout>
                 <UserSettings />
+              </Layout>
+            }
+          />
+          {/* Route pour la page de connexion */}
+          <Route path="/auth/signin" element={<SignIn />} />
+          {/* Nouvelle route pour la page d'inscription */}
+          <Route path="/auth/signup" element={<SignUp />} />
+          {/* Nouvelle route pour Account Activity */}
+          <Route
+            path="/security/account-activity"
+            element={
+              <Layout>
+                <AccountActivity />
+              </Layout>
+            }
+          />
+          {/* Nouvelle route pour Vault */}
+          <Route
+            path="/security/vault"
+            element={
+              <Layout>
+                <Vault />
+              </Layout>
+            }
+          />
+          {/* Nouvelle route pour Authentication */}
+          <Route
+            path="/security/authentication"
+            element={
+              <Layout>
+                <Authentication />
+              </Layout>
+            }
+          />
+
+          {/* Nouvelle route pour Devices */}
+          <Route
+            path="/security/devices"
+            element={
+              <Layout>
+                <Devices />
               </Layout>
             }
           />
