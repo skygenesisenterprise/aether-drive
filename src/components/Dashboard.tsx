@@ -219,15 +219,6 @@ export function Dashboard() {
           </div>
         </div>
       </div>
-
-      {/* Quick access section */}
-      <div>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-medium">Quick Access</h2>
-          <button className="text-sm font-medium text-primary">View All</button>
-        </div>
-        <FileExplorer />
-      </div>
     </div>
   );
 }

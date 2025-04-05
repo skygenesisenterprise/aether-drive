@@ -16,6 +16,10 @@ import {
   Archive,
   ChevronRight,
   LayoutGrid,
+  Lock,
+  Key,
+  Shield,
+  Smartphone,
 } from 'lucide-react';
 
 interface SidebarItemProps {
@@ -109,6 +113,7 @@ export function Sidebar() {
         expanded ? 'w-60' : 'w-16'
       )}
     >
+      {/* Header (Logo) */}
       <div className="flex h-14 items-center px-4">
         <div
           className={cn(
@@ -116,7 +121,6 @@ export function Sidebar() {
             !expanded && 'justify-center w-full'
           )}
         >
-          {/* Logo */}
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <HardDrive className="h-4 w-4 text-primary-foreground" />
           </div>
@@ -126,8 +130,8 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Navigation section */}
-      <div className="flex-1 overflow-auto py-2">
+      {/* Main navigation */}
+      <div className="flex-1 overflow-hidden">
         <nav className="grid gap-1 px-2">
           <SidebarItem
             href="/"
@@ -179,7 +183,7 @@ export function Sidebar() {
           />
         </nav>
 
-        {/* File categories section */}
+        {/* File Types */}
         <div className="mt-6">
           <div className={cn('mb-2 px-4', !expanded && 'px-2')}>
             {expanded && (
@@ -229,16 +233,61 @@ export function Sidebar() {
             />
           </nav>
         </div>
+
+        {/* Security */}
+        <div className="mt-6">
+          <div className={cn('mb-2 px-4', !expanded && 'px-2')}>
+            {expanded && (
+              <p className="text-xs font-semibold text-muted-foreground">SECURITY</p>
+            )}
+          </div>
+          <nav className="grid gap-1 px-2">
+            <SidebarItem
+              href="/security/account-activity"
+              icon={<Clock className="h-4 w-4" />}
+              text="Account Activity"
+              active={activeItem === '/security/account-activity'}
+              expanded={expanded}
+              onClick={() => handleNavigation('/security/account-activity')}
+            />
+            <SidebarItem
+              href="/security/authentication"
+              icon={<Lock className="h-4 w-4" />}
+              text="Authentication"
+              active={activeItem === '/security/authentication'}
+              expanded={expanded}
+              onClick={() => handleNavigation('/security/authentication')}
+            />
+            <SidebarItem
+              href="/security/vault"
+              icon={<Shield className="h-4 w-4" />}
+              text="Vault"
+              active={activeItem === '/security/vault'}
+              expanded={expanded}
+              onClick={() => handleNavigation('/security/vault')}
+            />
+            <SidebarItem
+              href="/security/devices"
+              icon={<Smartphone className="h-4 w-4" />}
+              text="Devices"
+              active={activeItem === '/security/devices'}
+              expanded={expanded}
+              onClick={() => handleNavigation('/security/devices')}
+            />
+          </nav>
+        </div>
       </div>
 
-      {/* Storage section */}
-      <div className="border-t">
-        <SidebarStorage expanded={expanded} />
-      </div>
+      {/* Footer sections */}
+      <div className="mt-auto">
+        {/* Storage */}
+        <div className="border-t">
+          <SidebarStorage expanded={expanded} />
+        </div>
 
-      {/* Settings section */}
-      <div className="border-t">
-        <div className="py-2 px-2">
+        {/* Settings et Toggle button */}
+        <div className="border-t flex items-center justify-between px-2 py-2">
+          {/* Settings */}
           <SidebarItem
             href="/settings"
             icon={<Settings className="h-4 w-4" />}
@@ -247,21 +296,21 @@ export function Sidebar() {
             expanded={expanded}
             onClick={() => handleNavigation('/settings')}
           />
+
+          {/* Toggle button */}
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border hover:bg-muted"
+          >
+            <ChevronRight
+              className={cn(
+                "h-4 w-4 transition-transform",
+                expanded ? "rotate-180" : ""
+              )}
+            />
+          </button>
         </div>
       </div>
-
-      {/* Toggle button */}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="flex h-9 w-9 items-center justify-center self-end m-2 rounded-lg border hover:bg-muted"
-      >
-        <ChevronRight
-          className={cn(
-            "h-4 w-4 transition-transform",
-            expanded ? "rotate-180" : ""
-          )}
-        />
-      </button>
     </aside>
   );
 }
