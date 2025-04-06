@@ -16,8 +16,8 @@ import {
   ChevronRight,
   Camera
 } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
-import { cn } from '../../lib/utils';
+import { useTheme } from '../../../contexts/ThemeContext';
+import { cn } from '../../../lib/utils';
 
 // Mock user data
 const mockUser = {

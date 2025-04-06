@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { X, Search, Plus, User, Link, Copy, Check, Users } from 'lucide-react';
-import { cn } from '../../lib/utils';
-import type { FileItem, FolderItem } from '../../lib/data';
+import { cn } from '../../../lib/utils';
+import type { FileItem, FolderItem } from '../../../lib/data';
 
 // Mock users data
 const mockUsers = [

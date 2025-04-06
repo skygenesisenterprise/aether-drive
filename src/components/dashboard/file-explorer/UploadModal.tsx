@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { FileUpload } from './FileUpload';
-import { cn } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
 
 interface UploadModalProps {
   isOpen: boolean;

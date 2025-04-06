@@ -18,8 +18,8 @@ import {
   ChevronRight,
   Info
 } from 'lucide-react';
-import { formatFileSize, formatDate, cn } from '../../lib/utils';
-import type { FileItem } from '../../lib/data';
+import { formatFileSize, formatDate, cn } from '../../../lib/utils';
+import type { FileItem } from '../../../lib/data';
 
 interface FilePreviewProps {
   file: FileItem | null;

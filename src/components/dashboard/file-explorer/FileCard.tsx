@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { MoreVertical, Star, File, FileText, Image, Video, Archive, Table, Presentation } from 'lucide-react';
-import { cn } from '../../lib/utils';
-import type { FileItem } from '../../lib/data';
-import { formatFileSize, formatDate } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
+import type { FileItem } from '../../../lib/data';
+import { formatFileSize, formatDate } from '../../../lib/utils';
 
 interface FileCardProps {
   file: FileItem;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { cn } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
 import { Search, Bell, Plus, ChevronDown, Moon, Sun, Menu } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../../contexts/ThemeContext';
 
 interface HeaderProps {
   onMobileMenuToggle: () => void;
@@ -36,7 +36,8 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
 
   const handleUpload = () => {
     console.log('Upload action triggered');
-    // Ajoutez ici la logique pour télécharger un fichier
+    // Ajoute une logique pour télécharger un fichier
+
     setIsDropdownOpen(false); // Fermer le menu après l'action
   };
 

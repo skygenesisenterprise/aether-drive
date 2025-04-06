@@ -1,6 +1,6 @@
 import { useState, useRef, type DragEvent, type ChangeEvent } from 'react';
 import { Upload, X, FileText, Image, Video, Music, Archive, File, Loader2 } from 'lucide-react';
-import { cn } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
 
 interface FileUploadProps {
   onFilesUpload: (files: File[]) => void;

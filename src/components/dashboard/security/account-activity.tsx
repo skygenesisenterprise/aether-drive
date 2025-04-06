@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useTheme } from '../../contexts/ThemeContext';
-import { cn } from '../../lib/utils';
+import { useTheme } from '../../../contexts/ThemeContext';
+import { cn } from '../../../lib/utils';
 
 export default function AccountActivity() {
   // Exemple de données fictives pour l'activité du compte

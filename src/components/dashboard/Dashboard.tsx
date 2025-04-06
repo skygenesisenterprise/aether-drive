@@ -11,8 +11,8 @@ import {
   BarChart3,
   ArrowUpRight
 } from 'lucide-react';
-import { getRecentFiles, type FileItem } from '../lib/data';
-import { cn, formatFileSize, formatDate } from '../lib/utils';
+import { getRecentFiles, type FileItem } from '../../lib/data';
+import { cn, formatFileSize, formatDate } from '../../lib/utils';
 
 interface DashboardCardProps {
   title: string;

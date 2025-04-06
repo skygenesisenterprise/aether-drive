@@ -24,8 +24,8 @@ import { FolderCard } from './FolderCard';
 import { UploadModal } from './UploadModal';
 import { FilePreview } from './FilePreview';
 import { ShareModal } from './ShareModal';
-import { cn } from '../../lib/utils';
-import { getItemsByParentId, type FileItem, type FolderItem } from '../../lib/data';
+import { cn } from '../../../lib/utils';
+import { getItemsByParentId, type FileItem, type FolderItem } from '../../../lib/data';
 
 interface FileExplorerProps {
   currentPath?: string;

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { MoreVertical, Star, Folder } from 'lucide-react';
-import { cn } from '../../lib/utils';
-import type { FolderItem } from '../../lib/data';
-import { formatDate } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
+import type { FolderItem } from '../../../lib/data';
+import { formatDate } from '../../../lib/utils';
 
 interface FolderCardProps {
   folder: FolderItem;
