@@ -12,10 +12,6 @@ const getUserById = async (id: number) => {
   return await User.findByPk(id);
 };
 
-const createUser = async (data: UserData) => {
-  return await User.create(data);
-};
-
 const updateUser = async (id: number, data: Partial<UserData>) => {
   const user = await User.findByPk(id);
   if (!user) {
@@ -35,7 +31,6 @@ const deleteUser = async (id: number) => {
 
 export default {
   getUserById,
-  createUser,
   updateUser,
   deleteUser,
 };

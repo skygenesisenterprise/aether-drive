@@ -15,17 +15,6 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-// Créer un nouvel utilisateur
-export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const { name, email, password } = req.body;
-    const newUser = await userService.createUser({ name, email, password });
-    res.status(201).json(newUser);
-  } catch (error) {
-    next(error); // Passe l'erreur au middleware de gestion des erreurs
-  }
-};
-
 // Mettre à jour un utilisateur
 export const updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
