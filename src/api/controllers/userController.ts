@@ -1,55 +1,56 @@
-import { Request, Response } from 'express';
-import User from '../models/userModel';
+import { Request, Response, NextFunction } from 'express';
+import userService from '../services/userService';
 
 // Récupérer un utilisateur par ID
-export const getUserById = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const user = await User.findByPk(req.params.id);
+    const user = await userService.getUserById(Number(req.params.id));
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      res.status(404).json({ error: 'User not found' });
+      return;
     }
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch user' });
+    next(error); // Passe l'erreur au middleware de gestion des erreurs
   }
 };
 
 // Créer un nouvel utilisateur
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { name, email, password } = req.body;
-    const newUser = await User.create({ name, email, password });
+    const newUser = await userService.createUser({ name, email, password });
     res.status(201).json(newUser);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create user' });
+    next(error); // Passe l'erreur au middleware de gestion des erreurs
   }
 };
 
 // Mettre à jour un utilisateur
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { name, email } = req.body;
-    const user = await User.findByPk(req.params.id);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+    const updatedUser = await userService.updateUser(Number(req.params.id), { name, email });
+    if (!updatedUser) {
+      res.status(404).json({ error: 'User not found' });
+      return;
     }
-    await user.update({ name, email });
-    res.status(200).json(user);
+    res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update user' });
+    next(error); // Passe l'erreur au middleware de gestion des erreurs
   }
 };
 
 // Supprimer un utilisateur
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const user = await User.findByPk(req.params.id);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+    const deletedUser = await userService.deleteUser(Number(req.params.id));
+    if (!deletedUser) {
+      res.status(404).json({ error: 'User not found' });
+      return;
     }
-    await user.destroy();
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete user' });
+    next(error); // Passe l'erreur au middleware de gestion des erreurs
   }
 };
