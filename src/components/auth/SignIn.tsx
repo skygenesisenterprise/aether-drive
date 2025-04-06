@@ -54,7 +54,7 @@ export default function SignIn() {
               </div>
 
               <div className="text-sm">
-                <a href="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="auth/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
                   Forgot password?
                 </a>
               </div>
@@ -71,20 +71,10 @@ export default function SignIn() {
           <div className="mt-6 text-center text-sm">
             <p className="text-gray-600">
               Don't have an account?{" "}
-              <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <a href="auth/SignUp" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Sign up
               </a>
             </p>
-          </div>
-
-          <div className="mt-8 pt-6 border-t border-gray-200 flex justify-center">
-            <a
-              href="/"
-              className="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </a>
           </div>
         </div>
       </div>

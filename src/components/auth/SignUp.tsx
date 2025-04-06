@@ -102,16 +102,6 @@ export default function SignUp() {
               </a>
             </p>
           </div>
-
-          <div className="mt-8 pt-6 border-t border-gray-200 flex justify-center">
-            <a
-              href="/"
-              className="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </a>
-          </div>
         </div>
       </div>
     </Layout>

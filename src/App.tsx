@@ -53,7 +53,7 @@ export default function App() {
             path="/dashboard/files"
             element={
               <DashboardLayout>
-                <FileExplorer currentPath="/files" />
+                <FileExplorer currentPath="dashboard/files" />
               </DashboardLayout>
             }
           />
