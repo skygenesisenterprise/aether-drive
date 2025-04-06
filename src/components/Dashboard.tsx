@@ -1,4 +1,4 @@
-import { FileExplorer } from './file-explorer/FileExplorer';
+import React, { useEffect, useState } from 'react';
 import {
   HardDrive,
   Star,
@@ -108,7 +108,46 @@ const RecentFile = ({ file }: RecentFileProps) => {
   );
 };
 
+interface DashboardStats {
+  storageUsed: string;
+  sharedFiles: number;
+  starredItems: number;
+  recentActivity: number;
+}
+
 export function Dashboard() {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchDashboardStats() {
+      try {
+        const response = await fetch('/api/dashboard/stats');
+        const data = await response.json();
+        setStats({
+          storageUsed: `${(data.storageUsed / (1024 * 1024 * 1024)).toFixed(2)} GB`, // Convertir en GB
+          sharedFiles: data.sharedFiles,
+          starredItems: data.starredItems,
+          recentActivity: data.recentActivity,
+        });
+      } catch (error) {
+        console.error('Failed to fetch dashboard stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchDashboardStats();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!stats) {
+    return <p>Failed to load dashboard data.</p>;
+  }
+
   const recentFiles = getRecentFiles(5);
 
   return (
@@ -124,7 +163,7 @@ export function Dashboard() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <DashboardCard
           title="Storage Used"
-          value="12.5 GB"
+          value={stats.storageUsed}
           description="Out of 25 GB"
           icon={<HardDrive />}
           bgClass="bg-blue-50 dark:bg-blue-900/20"
@@ -134,8 +173,8 @@ export function Dashboard() {
         />
         <DashboardCard
           title="Shared Files"
-          value="47"
-          description="12 recently shared"
+          value={stats.sharedFiles.toString()}
+          description="Files shared with others"
           icon={<Users />}
           bgClass="bg-purple-50 dark:bg-purple-900/20"
           iconClass="text-purple-500"
@@ -144,7 +183,7 @@ export function Dashboard() {
         />
         <DashboardCard
           title="Starred Items"
-          value="18"
+          value={stats.starredItems.toString()}
           description="Files and folders"
           icon={<Star />}
           bgClass="bg-amber-50 dark:bg-amber-900/20"
@@ -152,7 +191,7 @@ export function Dashboard() {
         />
         <DashboardCard
           title="Recent Activity"
-          value="192"
+          value={stats.recentActivity.toString()}
           description="In the last 30 days"
           icon={<Clock />}
           bgClass="bg-green-50 dark:bg-green-900/20"

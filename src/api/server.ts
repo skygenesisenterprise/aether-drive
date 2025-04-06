@@ -1,9 +1,9 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
-import userRoutes from './routes/userRoutes.js'; // Exemple de routes utilisateur
-import db from './utils/database.js'; // Exemple de connexion à la base de données
+import userRoutes from './routes/userRoutes'; 
+import db from './utils/database'; 
 
 // Charger le fichier d'environnement approprié
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
@@ -21,18 +21,18 @@ app.use(express.urlencoded({ extended: true })); // Parser les requêtes URL-enc
 // Connecter à la base de données
 db.authenticate()
   .then(() => console.log('Database connected successfully'))
-  .catch((err) => console.error('Database connection failed:', err));
+  .catch((err: Error) => console.error('Database connection failed:', err));
 
 // Routes
 app.use('/api/users', userRoutes); // Exemple de route pour les utilisateurs
 
 // Gestion des erreurs 404
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
 // Gestion des erreurs globales
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
 });
