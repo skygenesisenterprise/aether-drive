@@ -59,7 +59,7 @@
     "src", "src/api",
 
     // Inclut la configuration Vite
-    // "vite.config.ts"
+    "vite.config.ts"
   ],
   "exclude": [
     // Exclut le dossier node_modules
