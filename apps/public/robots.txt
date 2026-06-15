@@ -1,0 +1,27 @@
+User-agent: *
+Disallow: /
+
+Allow: /$
+Allow: /be_fr/
+Allow: /be_fr$
+Allow: /be_nl/
+Allow: /be_nl$
+Allow: /ch_fr/
+Allow: /ch_fr$
+Allow: /de/
+Allow: /de$
+Allow: /en/
+Allow: /en$
+Allow: /es/
+Allow: /es$
+Allow: /fr/
+Allow: /fr$
+
+# Allow monitoring endpoints
+Allow: /health
+
+# Crawl delay
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://skygenesisenterprise.com/sitemap.xml

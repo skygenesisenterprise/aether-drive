@@ -1,0 +1,211 @@
+version: "3.8"
+
+services:
+  # Caddy Gateway (Reverse Proxy)
+  gateway:
+    image: caddy:alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-aether}-gateway
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      HOST_DOMAIN: ${HOST_DOMAIN:-localhost}
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - aether-network
+
+  # Frontend (Next.js App)
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME:-aether}-frontend
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_BASE_URL: /api/v1
+      BACKEND_URL: http://backend:8080
+      API_BASE_URL: http://backend:8080
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-your-super-secret-nextauth-key-change-in-production}
+    expose:
+      - "3000"
+    networks:
+      - aether-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Backend (Go API Server)
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME:-aether}-backend
+    environment:
+      NODE_ENV: production
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 8080
+      SERVER_ENVIRONMENT: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-aether_identity}
+      REDIS_URL: redis://redis:6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-aether-redis-2025}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      JWT_EXPIRATION_HOURS: 24
+      SECURITY_ENCRYPTION_KEY: ${SECURITY_ENCRYPTION_KEY:-your-32-character-encryption-key}
+      SECURITY_KDF_ITERATIONS: 100000
+      SERVER_READ_TIMEOUT: 30
+      SERVER_WRITE_TIMEOUT: 30
+    volumes:
+      - ./server/logs:/app/logs
+      - ./server/uploads:/app/uploads
+    expose:
+      - "8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - aether-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-aether}-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-aether_identity}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_INITDB_ARGS: --encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - aether-network
+
+  # Redis for caching and sessions
+  redis:
+    image: redis:7-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-aether}-redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-aether-redis-2025}
+      - REDIS_MAX_MEMORY=${REDIS_MAX_MEMORY:-512mb}
+      - REDIS_SESSION_TTL=${REDIS_SESSION_TTL:-86400}
+      - REDIS_CACHE_TTL=${REDIS_CACHE_TTL:-3600}
+      - REDIS_RATE_LIMIT_WINDOW=${REDIS_RATE_LIMIT_WINDOW:-900}
+      - REDIS_RATE_LIMIT_MAX=${REDIS_RATE_LIMIT_MAX:-100}
+    volumes:
+      - redis_data:/data
+      - ./redis/redis-${NODE_ENV:-prod}.conf:/usr/local/etc/redis/redis.conf:ro
+      - ${REDIS_LOGS_DIR:-./logs/redis}:/var/log/redis
+    expose:
+      - "6379"
+    restart: ${RESTART_POLICY:-unless-stopped}
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: ${REDIS_HEALTH_CHECK_INTERVAL:-10s}
+      timeout: ${REDIS_HEALTH_CHECK_TIMEOUT:-3s}
+      retries: ${REDIS_HEALTH_CHECK_RETRIES:-5}
+      start_period: ${REDIS_HEALTH_CHECK_START_PERIOD:-30s}
+    networks:
+      - aether-network
+
+  # Monitoring Stack (Optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-aether}-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+    networks:
+      - aether-network
+    profiles:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-aether}-grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin_password_2024}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+    networks:
+      - aether-network
+    profiles:
+      - monitoring
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  aether-network:
+    driver: bridge

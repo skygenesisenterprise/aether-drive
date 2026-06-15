@@ -1,0 +1,10 @@
+<svg width="135" height="40" viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0.5" y="0.5" width="134" height="39" rx="8" fill="#0F172A" fill-opacity="0.04"/>
+  <rect x="0.5" y="0.5" width="134" height="39" rx="8" stroke="#334155" stroke-opacity="0.18"/>
+  <path d="M18 11.748V28.252C18 28.752 18.545 29.059 18.971 28.799L28.902 22.746L18 11.748Z" fill="#0F172A" fill-opacity="0.65"/>
+  <path d="M30.405 21.841C30.773 21.617 30.773 21.084 30.405 20.86L28.031 19.413L25.333 22.121L28.031 24.829L30.405 23.382C30.773 23.158 30.773 22.065 30.405 21.841Z" fill="#0F172A"/>
+  <path d="M18.971 11.201C18.545 10.941 18 11.248 18 11.748V11.748L28.902 22.746L25.333 19.175L18.971 11.201Z" fill="#0F172A" fill-opacity="0.82"/>
+  <path d="M18 28.252C18 28.752 18.545 29.059 18.971 28.799L25.333 24.825L28.902 22.746L18 28.252Z" fill="#0F172A" fill-opacity="0.5"/>
+  <text x="40" y="15" fill="#0F172A" fill-opacity="0.72" font-family="Arial, sans-serif" font-size="8">Bientôt sur</text>
+  <text x="40" y="27" fill="#0F172A" font-family="Arial, sans-serif" font-size="14" font-weight="700">Google Play</text>
+</svg>

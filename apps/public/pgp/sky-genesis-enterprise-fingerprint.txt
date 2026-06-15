@@ -1,0 +1,13 @@
+Sky Genesis Enterprise OpenPGP Public Key
+
+Fingerprint:
+4A5B 6C7D 8E9F 0ABC 1DEF 2345 6789 ABCD EF01 2345
+
+Key ID:
+EF012345
+
+Created:
+2026-03-15
+
+Status:
+Placeholder

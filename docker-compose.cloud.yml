@@ -1,10 +1,10 @@
 services:
-  aetherbank:
+  aether-drive:
     build:
       context: .
       dockerfile: Dockerfile.cloud
-    image: aetherbank:latest
-    container_name: aetherbank
+    image: skygenesisenterprise/aether-drive:latest
+    container_name: aether-drive
     restart: unless-stopped
     ports:
       - "3000:3000"
