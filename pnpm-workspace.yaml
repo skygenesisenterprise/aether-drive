@@ -1,0 +1,13 @@
+packages:
+  - "apps"
+  - "tools"
+  - "tests"
+  - "package/snap"
+  - "package/node"
+  - "package/github"
+  - "package/vscode"
+  - "package/cli"
+
+ignoredBuiltDependencies:
+  - sharp
+  - unrs-resolver

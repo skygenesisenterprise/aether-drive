@@ -1,3 +1,0 @@
-Contact: mailto:security@skygenesisenterprise.com
-Encryption: https://myaccount.skygenesisenterprise.com/pgp-key.txt
-Acknowledgements: https://myaccount.skygenesisenterprise.com/security-acknowledgements

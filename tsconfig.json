@@ -1,71 +1,27 @@
 {
-  "compilerOptions": {
-    // Cible ES2020 pour des fonctionnalités modernes
-    "target": "ES2020",
-
-    // Utilisation des champs de classe définis
-    "useDefineForClassFields": true,
-
-    // Bibliothèques utilisées (DOM pour le frontend, ES2020 pour les fonctionnalités modernes)
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-
-    // Module ESNext pour le frontend, compatible avec les modules modernes
-    "module": "ESNext",
-
-    // Résolution des modules pour Node.js et bundlers modernes
-    "moduleResolution": "node",
-
-    // Permet d'importer des fichiers TypeScript avec extensions explicites
-    "allowImportingTsExtensions": true,
-
-    // Permet d'importer des fichiers JSON
-    "resolveJsonModule": true,
-
-    // Isolation des modules pour éviter les erreurs de compilation
-    "isolatedModules": true,
-
-    // JSX pour React
-    "jsx": "react-jsx",
-
-    // Vérification stricte des types
-    "strict": true,
-
-    // Empêche les cas non gérés dans les instructions switch
-    "noFallthroughCasesInSwitch": true,
-
-    // Désactive l'émission de fichiers JavaScript (utile pour le frontend avec Vite)
-    "noEmit": true,
-
-    // Ignore les vérifications des fichiers de bibliothèque pour accélérer la compilation
-    "skipLibCheck": true,
-
-    // Active l'interopérabilité avec les modules CommonJS
-    "esModuleInterop": true,
-
-    // Permet d'utiliser les imports par défaut pour les modules CommonJS
-    "allowSyntheticDefaultImports": true,
-
-    // Génère des fichiers de déclaration pour les types
-    "declaration": true,
-
-    // Définit le répertoire racine des fichiers source
-    "rootDir": "./src",
-
-    // Définit le répertoire de sortie pour les fichiers compilés (utile pour le backend)
-    "outDir": "./dist"
-  },
-  "include": [
-    // Inclut tous les fichiers dans le dossier src
-    "src", "src/api",
-
-    // Inclut la configuration Vite
-    "vite.config.ts"
+  "files": [],
+  "references": [
+    { "path": "./apps" }
   ],
-  "exclude": [
-    // Exclut le dossier node_modules
-    "node_modules",
-
-    // Exclut les fichiers de sortie
-    "dist"
-  ]
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "exclude": ["node_modules"]
 }
