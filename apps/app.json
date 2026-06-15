@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Aether Bank",
+    "name": "Aether Drive",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,11 +8,11 @@
     "scheme": "mobile",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "bundleIdentifier": "com.aetherbank.mobile",
+      "bundleIdentifier": "com.aetherdrive.mobile",
       "icon": "./assets/expo.icon"
     },
     "android": {
-      "package": "com.aetherbank.mobile",
+      "package": "com.aetherdrive.mobile",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -45,13 +45,13 @@
       [
         "expo-local-authentication",
         {
-          "faceIDPermission": "Autorisez Aether Bank a utiliser Face ID pour deverrouiller l'application et confirmer votre identite."
+          "faceIDPermission": "Autorisez Aether Drive a utiliser Face ID pour deverrouiller l'application et confirmer votre identite."
         }
       ],
       [
         "expo-camera",
         {
-          "cameraPermission": "Autorisez Aether Bank a utiliser la camera pour scanner un QR code de paiement."
+          "cameraPermission": "Autorisez Aether Drive a utiliser la camera pour scanner un QR code de paiement."
         }
       ],
       "expo-font",
