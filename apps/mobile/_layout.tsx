@@ -220,6 +220,18 @@ function MobileLayoutTabs() {
           ),
         }}
       />
+      <Tabs.Screen name="profile-notifications" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-infos" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-bank" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-security" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-document" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-org" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-financial" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-ledger" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-ledger-terminal" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-support" options={{ href: null, tabBarStyle: { display: "none" } }} />
+      <Tabs.Screen name="profile-settings" options={{ href: null, tabBarStyle: { display: "none" } }} />
+
       <Tabs.Screen
         name="login"
         options={{

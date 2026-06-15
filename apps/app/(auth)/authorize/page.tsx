@@ -1,0 +1,241 @@
+"use client";
+
+import { Suspense, useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Globe, AlertCircle, CheckCircle } from "lucide-react";
+
+function AuthorizeForm() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [rememberDevice, setRememberDevice] = useState(false);
+  const [error, setError] = useState("");
+
+  const clientId = searchParams.get("client_id") || "";
+  const redirectUri = searchParams.get("redirect_uri") || "";
+  const responseType = searchParams.get("response_type") || "code";
+  const scope = searchParams.get("scope") || "openid profile email";
+  const state = searchParams.get("state") || "";
+
+  const scopesArray = scope.split(" ");
+
+  useEffect(() => {
+    if (!clientId || !redirectUri) {
+      setError("Invalid authorization request parameters");
+    }
+  }, [clientId, redirectUri]);
+
+  const handleAuthorize = async () => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/v1/auth/authorize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientId,
+          redirectUri,
+          responseType,
+          scope,
+          state,
+          approved: true,
+          rememberDevice,
+        }),
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Authorization failed");
+        setIsLoading(false);
+        return;
+      }
+
+      if (data.redirectUri) {
+        window.location.href = data.redirectUri;
+      } else {
+        router.push("/dashboard");
+      }
+    } catch {
+      setError("Error during authorization. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeny = async () => {
+    setIsLoading(true);
+
+    const errorUrl = new URL(redirectUri);
+    errorUrl.searchParams.set("error", "access_denied");
+    errorUrl.searchParams.set("error_description", "The user denied the authorization request");
+    if (state) errorUrl.searchParams.set("state", state);
+
+    window.location.href = errorUrl.toString();
+  };
+
+  const formatScope = (s: string) => {
+    const scopeLabels: Record<string, string> = {
+      "read:profile": "Read profile",
+      "write:profile": "Modify profile",
+      "read:email": "Read email address",
+      openid: "OpenID Authentication",
+      profile: "Profile information",
+      email: "Email address",
+    };
+    return scopeLabels[s] || s;
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-1 flex items-center justify-center p-8 bg-background">
+        <div className="w-full max-w-md">
+          <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
+            <div className="text-center mb-6">
+              <h1 className="text-xl font-bold text-primary">Sky Genesis Enterprise</h1>
+              <h2 className="mt-4 text-2xl font-bold text-foreground">Authorization Request</h2>
+              <p className="mt-2 text-muted-foreground">
+                A third-party application is requesting access to your account
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {error && (
+                <div className="flex items-center gap-2 rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <div className="rounded-lg border border-border bg-muted/30 p-6 space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center">
+                    <Globe className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg">External Application</h3>
+                    <p className="text-sm text-muted-foreground">{redirectUri}</p>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-border">
+                  <p className="text-sm font-medium mb-3">
+                    This application is requesting the following permissions:
+                  </p>
+                  <ul className="space-y-2">
+                    {scopesArray.map((s: string) => (
+                      <li key={s} className="flex items-center gap-2 text-sm">
+                        <Checkbox
+                          checked
+                          disabled
+                          className="border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                        />
+                        <span className="text-muted-foreground">{formatScope(s)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="remember"
+                  checked={rememberDevice}
+                  onCheckedChange={(checked) => setRememberDevice(checked as boolean)}
+                  className="border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                />
+                <Label
+                  htmlFor="remember"
+                  className="text-sm font-normal text-muted-foreground cursor-pointer"
+                >
+                  Remember this device for future authorizations
+                </Label>
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleDeny}
+                  disabled={isLoading}
+                  className="flex-1 h-11 border-border hover:bg-muted"
+                >
+                  Deny
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleAuthorize}
+                  disabled={isLoading}
+                  className="flex-1 h-11 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold tracking-wide"
+                >
+                  {isLoading ? (
+                    <span className="flex items-center gap-2">
+                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      Processing...
+                    </span>
+                  ) : (
+                    "Authorize"
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 text-center">
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <CheckCircle className="h-4 w-4 text-green-600" />
+              <span>Secure SSL/TLS Connection</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer className="p-6 bg-muted/50 border-t border-border">
+        <div className="max-w-md mx-auto text-center text-sm text-muted-foreground space-y-2">
+          <p>
+            By signing in, you agree to our{" "}
+            <a href="#" className="text-primary hover:underline">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a href="#" className="text-primary hover:underline">
+              Privacy Policy
+            </a>
+          </p>
+          <p className="text-xs">
+            Any unauthorized access attempt is strictly prohibited and will be reported to the
+            proper authorities.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+export default function AuthorizePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <AuthorizeForm />
+    </Suspense>
+  );
+}
