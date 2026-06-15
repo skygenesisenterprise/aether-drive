@@ -1,7 +1,7 @@
 {
-  "name": "@aether-bank/apps",
+  "name": "@aether-drive/apps",
   "version": "1.0.0",
-  "description": "Frontend application for My Enterprise App & Mobile Experience",
+  "description": "Frontend application for Aether Drive App & Mobile Experience",
   "private": true,
   "type": "module",
   "main": "expo-router/entry",
@@ -15,7 +15,7 @@
     "mobile:run:android": "pnpm exec expo run:android",
     "mobile:run:ios": "pnpm exec expo run:ios",
     "mobile:open:android": "studio android",
-    "mobile:open:ios": "open ios/Aether\\ Bank.xcworkspace",
+    "mobile:open:ios": "open ios/Aether\\ Drive.xcworkspace",
     "mobile:doctor": "pnpm exec expo-doctor",
     "mobile:install": "pnpm exec expo install",
     "mobile:fix": "pnpm exec expo install --fix",
