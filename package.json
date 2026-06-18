@@ -100,7 +100,7 @@
     ]
   },
   "dependencies": {
-    "@capacitor/core": "^8.2.0",
+    "@capacitor/core": "^8.4.0",
     "@fontsource-variable/mona-sans": "^5.2.8",
     "@loglayer/transport-pino": "^3.0.2",
     "@prisma/client": "^7.4.2",
