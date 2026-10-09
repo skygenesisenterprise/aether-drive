@@ -83,7 +83,7 @@
     "expo-image": "~3.0.11",
     "expo-image-picker": "^56.0.17",
     "expo-linear-gradient": "^56.0.4",
-    "expo-linking": "~8.0.12",
+    "expo-linking": "~57.0.12",
     "expo-local-authentication": "^56.0.4",
     "expo-maps": "^56.0.7",
     "expo-network": "^56.0.5",
